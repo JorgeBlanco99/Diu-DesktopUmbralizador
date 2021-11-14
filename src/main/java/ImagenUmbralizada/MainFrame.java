@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.opencv.core.Mat;
@@ -57,17 +58,8 @@ public class MainFrame extends javax.swing.JFrame {
         thresholdMenuItem.setEnabled(false);
         saveImageMenu.setEnabled(false);
         setInfo();
-        initialDisplay();
-
     }
 
-    private void initialDisplay() {
-        VentanaInterna vInterna = new VentanaInterna();
-        vInterna.setTitle("Bienvenido");
-        escritorio.add(vInterna);
-        vInterna.setVisible(true);
-
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -96,7 +88,17 @@ public class MainFrame extends javax.swing.JFrame {
                 escritorioComponentRemoved(evt);
             }
         });
-        escritorio.setLayout(null);
+        escritorio.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                escritorioComponentResized(evt);
+            }
+        });
+
+        jMenuBar1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                jMenuBar1ComponentResized(evt);
+            }
+        });
 
         fileMenu.setText("File");
 
@@ -163,11 +165,11 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio)
+            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
         );
 
         pack();
@@ -272,6 +274,19 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_thresholdMenuItemActionPerformed
 
+    private void jMenuBar1ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jMenuBar1ComponentResized
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuBar1ComponentResized
+
+    private void escritorioComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_escritorioComponentResized
+        JInternalFrame[] frames= escritorio.getAllFrames();
+        for(JInternalFrame ventana: frames){
+            if(escritorio.getWidth()<ventana.getX()|| escritorio.getHeight()<ventana.getY()){
+                ventana.setLocation(0,0);
+            }
+        }
+    }//GEN-LAST:event_escritorioComponentResized
+
     private void setFileChooser() {
         fc.setAcceptAllFileFilterUsed(false);
         filter = new FileNameExtensionFilter("Imágenes (png, jpg, jpeg, bmp)", "png", "jpg", "jpeg", "bmp");
@@ -296,7 +311,6 @@ public class MainFrame extends javax.swing.JFrame {
         saveImageMenu.setEnabled(true);
         vInterna.setVisible(true);
         thresholdMenuItem.setEnabled(true);
-
     }
 
     /**
